@@ -1,0 +1,14 @@
+{
+  "Google": {
+    "Global": "https://www.google.com",
+    "China": "https://www.google.cn",
+    "Hong Kong": "https://www.google.com.hk"
+  },
+  "YouTube": {
+    "Global": "https://www.youtube.com",
+    "Hong Kong": "https://www.youtube.com.hk"
+  },
+  "Baidu": {
+    "China": "https://www.baidu.com"
+  }
+}
