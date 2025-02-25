@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全网搜索工具</title>
+</head>
+<body>
+    <label for="websiteSelect">选择网站：</label>
+    <select id="websiteSelect">
+        <option value="">请选择</option>
+        <option value="Google">Google</option>
+        <option value="YouTube">YouTube</option>
+        <option value="Baidu">Baidu</option>
+    </select>
+
+    <label for="urlSelect">选择网址：</label>
+    <select id="urlSelect">
+        <option value="">请选择网站</option>
+    </select>
+
+    <script>
+        let websiteData = {}; // 存储从 JSON 读取的数据
+
+        // 读取 JSON 文件
+        fetch("websites.json")
+            .then(response => response.json())
+            .then(data => {
+                websiteData = data;
+            })
+            .catch(error => console.error("JSON 加载失败:", error));
+
+        // 监听网站选择框的变化
+        document.getElementById("websiteSelect").addEventListener("change", function () {
+            let selectedWebsite = this.value;
+            let urlSelect = document.getElementById("urlSelect");
+
+            // 清空现有选项
+            urlSelect.innerHTML = '<option value="">请选择网址</option>';
+
+            if (selectedWebsite && websiteData[selectedWebsite]) {
+                for (let region in websiteData[selectedWebsite]) {
+                    let url = websiteData[selectedWebsite][region];
+                    let option = document.createElement("option");
+                    option.value = url;
+                    option.textContent = url; // 只显示网址，不显示地区
+                    urlSelect.appendChild(option);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
