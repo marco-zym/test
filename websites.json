@@ -1,21 +1,12 @@
 {
     "Google": {
-      "Global": "https://www.google.com",
-      "China": "https://www.google.cn"
+        "Global": "https://www.google.com",
+        "China": "https://www.google.cn",
+        "Mongolia": "https://www.google.mn",
+        "South Korea": "https://www.google.co.kr"
     },
-    "YouTube": {
-      "Global": "https://www.youtube.com",
-      "Hong Kong": "https://www.youtube.com.hk"
-    },
-    "Baidu": {
-      "China": "https://www.baidu.com"
-    },
-    "Bing": {  
-      "Global": "https://www.bing.com",
-      "China": "https://cn.bing.com"
-    },
-    "DuckDuckGo": {
-      "Global": "https://www.duckduckgo.com"
+    "Bing": {
+        "Global": "https://www.bing.com",
+        "China": "https://cn.bing.com"
     }
-  }
-  
+}
