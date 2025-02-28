@@ -1,53 +1,242 @@
 <!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全网搜索工具</title>
-</head>
-<body>
-    <label for="websiteSelect">选择网站：</label>
-    <select id="websiteSelect">
-        <option value="">请选择</option>
-        <option value="Google">Google</option>
-        <option value="YouTube">YouTube</option>
-        <option value="Baidu">Baidu</option>
-    </select>
-
-    <label for="urlSelect">选择网址：</label>
-    <select id="urlSelect">
-        <option value="">请选择网站</option>
-    </select>
-
-    <script>
-        let websiteData = {}; // 存储从 JSON 读取的数据
-
-        // 读取 JSON 文件
-        fetch("websites.json")
-            .then(response => response.json())
-            .then(data => {
-                websiteData = data;
-            })
-            .catch(error => console.error("JSON 加载失败:", error));
-
-        // 监听网站选择框的变化
-        document.getElementById("websiteSelect").addEventListener("change", function () {
-            let selectedWebsite = this.value;
-            let urlSelect = document.getElementById("urlSelect");
-
-            // 清空现有选项
-            urlSelect.innerHTML = '<option value="">请选择网址</option>';
-
-            if (selectedWebsite && websiteData[selectedWebsite]) {
-                for (let region in websiteData[selectedWebsite]) {
-                    let url = websiteData[selectedWebsite][region];
-                    let option = document.createElement("option");
-                    option.value = url;
-                    option.textContent = url; // 只显示网址，不显示地区
-                    urlSelect.appendChild(option);
-                }
+<html>
+    <head>
+        <title>全网搜索</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                background-color: #f0f0f0;
             }
-        });
-    </script>
-</body>
+
+            .container {
+                width: 75%;
+            }
+
+            .lineDiv {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            button {
+                width: 300px;
+                height: 40px;
+                background-color: #f0f0f0;
+                color: black;
+                border-radius: 12px;
+                font-size: larger;
+            }
+
+            h1 {
+                display:flex;
+                background-color: #f0f0f0;
+                border: 2px solid 0,0,0,0;
+                /*border-radius: 8px;*/
+                padding: 5px;
+                height:150px;
+                justify-content: center;
+                align-items: center;
+            }
+
+            div {
+                display:flex;
+                background-color: #f0f0f0;
+                border: 2px solid 0,0,0,0;
+                /*border-radius: 8px;*/
+                padding: 5px;
+                height:150px;
+                justify-content: center;
+                align-items: center;
+            }
+
+            input {
+                background-color: #f0f0f0;
+                border: 2px solid black;
+                border-radius: 8px;
+                padding: 5px;
+                width:80%;
+                height:25px;
+            }
+
+            select {
+                width: 300px;
+                height: 40px;
+                border-width: 2px;
+                border-color: black;
+                background-color: #f0f0f0;
+                color: black;
+                border-radius: 12px;
+                font-size: larger;
+                text-align: center;
+            }
+
+            label {
+                font-size: large;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>全网搜索</h1>
+        <div class="container">
+            
+            <div class="lineDiv">
+                <div class="lineDiv">
+                    <input type="text">
+                    &ensp;
+                    <button onclick="search()">搜索</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lineDiv">
+            <label for="siteSelect"><strong>选择平台：</strong></label>
+            <select id="siteSelect">
+                <optgroup label="搜索引擎">
+                    <option value="Google">谷歌</option>
+                    <option value="Bing">必应</option>
+                    <option value="Yandex">Yandex</option>
+                    <option value="Yahoo">雅虎</option>
+                    <option value="Baidu">百度</option>
+                    <option value="DuckDuckGo">DuckDuckGo</option>
+                    <option value="Naver">Naver</option>
+                    <option value="Ecosia">Ecosia</option>
+                    <option value="Aol">美国在线</option>
+                    <option value="Perplexity">Perplexity</option>
+                </optgroup>
+                <optgroup label="视频平台">
+                    <option value="Iqiyi">爱奇艺</option>
+                    <option value="Tencent Video">腾讯视频</option>
+                    <option value="Mango TV">芒果TV</option>
+                    <option value="Bilibili">哔哩哔哩</option>
+                    <option value="Youku">优酷</option>
+                    <option value="Youtube">Youtube</option>
+                    <option value="Hulu">Hulu</option>
+                    <option value="Vimeo">Vimeo</option>
+                    <option value="Netflix">Netflix</option>
+                    <option value="Twitch">Twitch</option>
+                </optgroup>
+                <optgroup label="音乐平台">
+                    <option value="">网易云音乐</option>
+                    <option value="">QQ音乐</option>
+                    <option value="">Spotify</option>
+                    <option value="">苹果音乐</option>
+                    <option value="">酷狗音乐</option>
+                    <option value="">酷我音乐</option>
+                    <option value="">虾米音乐</option>
+                    <option value="">Tidal</option>
+                    <option value="">喜马拉雅FM</option>
+                    <option value="">Bilibili音乐</option>
+                </optgroup>
+                <optgroup label="社交媒体">
+                    <option value="Facebook">脸书</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Messenger">Messenger</option>
+                    <option value="WeChat">微信</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Tumblr">Tumblr</option>
+                    <option value="Weibo">微博</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Snapchat">快照</option>
+                    <option value="Reddit">Reddit</option>
+                </optgroup>
+                <optgroup label="购物平台">
+                    <option value="Amazon">亚马逊</option>
+                    <option value="Taobao">淘宝</option>
+                    <option value="Tmall">天猫</option>
+                    <option value="eBay">eBay</option>
+                    <option value="JD">京东</option>
+                    <option value="Pinduoduo">拼多多</option>
+                    <option value="Walmart">沃尔玛</option>
+                    <option value="AliExpress">速卖通</option>
+                    <option value="Shopify">Shopify</option>
+                    <option value="Rakuten">乐天</option>
+                </optgroup>
+                <optgroup label="知识平台">
+                    <option value="Zhihu">知乎</option>
+                    <option value="Baidu Encyclopedia">百度百科</option>
+                    <option value="Dedao">得到</option>
+                    <option value="Douban">豆瓣</option>
+                    <option value="IMOOC">慕课网</option>
+                    <option value="Wikipedia">维基百科</option>
+                    <option value="Coursera">Coursera</option>
+                    <option value="Khan Academy">可汗学院</option>
+                    <option value="edX">edX</option>
+                    <option value="Quora">Quora</option>
+                </optgroup>
+                <optgroup label="地图导航">
+                    <option value="Google Map">谷歌地图</option>
+                    <option value="HERE Map">HERE地图</option>
+                    <option value="OpenStreetMap">OpenStreetMap</option>
+                    <option value="Bing Map">必应地图</option>
+                    <option value="Yandex Map">Yandex地图</option>
+                    <option value="Sky Map">天地图</option>
+                    <option value="Baidu Map">百度地图</option>
+                    <option value="Gaode Map">高德地图</option>
+                    <option value="Tencent Map">腾讯地图</option>
+                    <option value="Gullmap">海鸥地图</option>
+                </optgroup>
+                <optgroup label="全球新闻">
+                    <option value="Lianhe Zaobao">联合早报</option>
+                    <option value="Asahi Shimbun">朝日新闻</option>
+                    <option value="the times">泰晤士报</option>
+                    <option value="new york times">纽约时报</option>
+                    <option value="Yomiuri Shimbun">读卖新闻</option>
+                    <option value="wall street journal">华尔街日报</option>
+                    <option value="financial times">金融时报</option>
+                    <option value="jakarta post">雅加达邮报</option>
+                    <option value="chosunilbo">朝鲜日报</option>
+                    <option value="washington post">华盛顿邮报</option>
+                </optgroup>
+                <optgroup label="其他网站">
+                    <option value="GitHub">GitHub</option>
+                    <option value="Stack Overflow">Stack Overflow</option>
+                    <option value="Google Scholar">Google Scholar</option>
+                    <option value="Scribd">Scribd</option>
+                </optgroup>
+            </select>
+
+            &ensp;
+
+            <label for="urlSelect">选择网址：</label>
+            <select id="urlSelect">
+                <option value="">请选择网站</option>
+            </select>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const siteSelect = document.getElementById("siteSelect");
+                const urlSelect = document.getElementById("urlSelect");
+
+                // 读取 JSON 文件并解析数据
+                fetch("websites.json")
+                    .then(response => response.json())
+                    .then(data => {
+                        // 监听网站选择框变化
+                        siteSelect.addEventListener("change", function () {
+                            const selectedSite = siteSelect.value;
+                            urlSelect.innerHTML = ""; // 清空地区选择框
+
+                            if (selectedSite && data[selectedSite]) {
+                                Object.entries(data[selectedSite]).forEach(([region, url]) => {
+                                    let option = document.createElement("option");
+                                    option.value = url;
+                                    option.textContent = `${url}`;
+                                    urlSelect.appendChild(option);
+                                });
+                            }
+                        });
+                    })
+                    .catch(error => console.error("Error loading websites.json:", error));
+            });
+
+        </script>
+    </body>
 </html>
